@@ -13,12 +13,12 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Getter
 public class UserCreateDto {
-  private Long id;
-  @NotEmpty
-  @NotNull
-  private String name;
-  @NotEmpty
-  @NotNull
-  @Email
-  private String email;
+    private Long id;
+    @NotEmpty
+    @NotNull
+    private String name;
+    @NotEmpty
+    @NotNull
+    @Email
+    private String email;
 }

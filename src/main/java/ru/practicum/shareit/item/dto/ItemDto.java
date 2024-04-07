@@ -11,10 +11,10 @@ import ru.practicum.shareit.user.model.User;
 @Getter
 @Setter
 public class ItemDto {
-  private Long id;
-  private String name;
-  private String description;
-  private Boolean available;
-  private User owner;
-  private ItemRequest itemRequest;
+    private Long id;
+    private String name;
+    private String description;
+    private Boolean available;
+    private User owner;
+    private ItemRequest itemRequest;
 }

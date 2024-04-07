@@ -12,28 +12,28 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(value = AlreadyExistsException.class)
-  protected ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException exception, WebRequest request) {
-    return new ResponseEntity<>("Duplicate", HttpStatus.CONFLICT);
-  }
+    @ExceptionHandler(value = AlreadyExistsException.class)
+    protected ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException exception, WebRequest request) {
+        return new ResponseEntity<>("Duplicate", HttpStatus.CONFLICT);
+    }
 
-  @ExceptionHandler(value = ConstraintViolationException.class)
-  protected ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException exception) {
-    return new ResponseEntity<>("Request validation exception", HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    protected ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException exception) {
+        return new ResponseEntity<>("Request validation exception", HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(value = HeaderNotExistsException.class)
-  protected ResponseEntity<String> handleHeaderNotExistsException(HeaderNotExistsException exception) {
-    return new ResponseEntity<>("Header not exists", HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+    @ExceptionHandler(value = HeaderNotExistsException.class)
+    protected ResponseEntity<String> handleHeaderNotExistsException(HeaderNotExistsException exception) {
+        return new ResponseEntity<>("Header not exists", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  @ExceptionHandler(value = NotFoundException.class)
-  protected ResponseEntity<String> handleNotFoundException(NotFoundException exception, WebRequest request) {
-    return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
-  }
+    @ExceptionHandler(value = NotFoundException.class)
+    protected ResponseEntity<String> handleNotFoundException(NotFoundException exception, WebRequest request) {
+        return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(value = IllegalCallerException.class)
-  protected ResponseEntity<String> handleIllegalCallerException(IllegalCallerException exception) {
-    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-  }
+    @ExceptionHandler(value = IllegalCallerException.class)
+    protected ResponseEntity<String> handleIllegalCallerException(IllegalCallerException exception) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
 }

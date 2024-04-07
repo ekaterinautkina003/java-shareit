@@ -17,36 +17,36 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  private final UserMapper userMapper;
-  private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
-  @Override
-  public UserDto create(UserCreateDto userDto) {
-    User user = userMapper.toUser(userDto);
-    return userMapper.toUserDto(userRepository.create(user));
-  }
+    @Override
+    public UserDto create(UserCreateDto userDto) {
+        User user = userMapper.toUser(userDto);
+        return userMapper.toUserDto(userRepository.create(user));
+    }
 
-  @Override
-  public UserDto update(Long userId, UserUpdateDto userDto) {
-    User user = userMapper.toUser(userDto);
-    return userMapper.toUserDto(userRepository.update(userId, user));
-  }
+    @Override
+    public UserDto update(Long userId, UserUpdateDto userDto) {
+        User user = userMapper.toUser(userDto);
+        return userMapper.toUserDto(userRepository.update(userId, user));
+    }
 
-  @Override
-  public UserDto getById(Long userId) {
-    return userMapper.toUserDto(userRepository.getById(userId));
-  }
+    @Override
+    public UserDto getById(Long userId) {
+        return userMapper.toUserDto(userRepository.getById(userId));
+    }
 
-  @Override
-  public void delete(Long userId) {
-    userRepository.delete(userId);
-  }
+    @Override
+    public void delete(Long userId) {
+        userRepository.delete(userId);
+    }
 
-  @Override
-  public List<UserDto> getAll() {
-    return userRepository.getAll()
-            .stream()
-            .map(userMapper::toUserDto)
-            .collect(Collectors.toList());
-  }
+    @Override
+    public List<UserDto> getAll() {
+        return userRepository.getAll()
+                .stream()
+                .map(userMapper::toUserDto)
+                .collect(Collectors.toList());
+    }
 }

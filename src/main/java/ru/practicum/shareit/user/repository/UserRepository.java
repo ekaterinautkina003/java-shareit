@@ -11,49 +11,49 @@ import java.util.Map;
 @Repository
 public class UserRepository {
 
-  private final Map<Long, User> map = new HashMap<>();
-  private static long counter = 0;
+    private static long counter = 0;
+    private final Map<Long, User> map = new HashMap<>();
 
-  public User getById(Long userId) {
-    return map.get(userId);
-  }
-
-  public User create(User user) {
-    if (isExistsByEmail(user.getEmail())) {
-      throw new AlreadyExistsException();
+    public User getById(Long userId) {
+        return map.get(userId);
     }
-    Long id = ++counter;
-    user.setId(id);
-    map.put(id, user);
-    return user;
-  }
 
-  private boolean isExistsByEmail(String email) {
-    return map.values()
-            .stream()
-            .anyMatch(user -> user.getEmail().equalsIgnoreCase(email));
-  }
-
-  public User update(Long userId, User user) {
-    User userById = map.get(userId);
-    if (user.getEmail() != null) {
-      if (isExistsByEmail(user.getEmail()) && !user.getEmail().equals(userById.getEmail())) {
-        throw new AlreadyExistsException();
-      }
-      userById.setEmail(user.getEmail());
+    public User create(User user) {
+        if (isExistsByEmail(user.getEmail())) {
+            throw new AlreadyExistsException();
+        }
+        Long id = ++counter;
+        user.setId(id);
+        map.put(id, user);
+        return user;
     }
-    if (user.getName() != null) {
-      userById.setName(user.getName());
+
+    private boolean isExistsByEmail(String email) {
+        return map.values()
+                .stream()
+                .anyMatch(user -> user.getEmail().equalsIgnoreCase(email));
     }
-    map.put(userId, userById);
-    return userById;
-  }
 
-  public void delete(Long userId) {
-    map.remove(userId);
-  }
+    public User update(Long userId, User user) {
+        User userById = map.get(userId);
+        if (user.getEmail() != null) {
+            if (isExistsByEmail(user.getEmail()) && !user.getEmail().equals(userById.getEmail())) {
+                throw new AlreadyExistsException();
+            }
+            userById.setEmail(user.getEmail());
+        }
+        if (user.getName() != null) {
+            userById.setName(user.getName());
+        }
+        map.put(userId, userById);
+        return userById;
+    }
 
-  public List<User> getAll() {
-    return List.copyOf(map.values());
-  }
+    public void delete(Long userId) {
+        map.remove(userId);
+    }
+
+    public List<User> getAll() {
+        return List.copyOf(map.values());
+    }
 }

@@ -21,50 +21,50 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-  private final ItemMapper itemMapper;
-  private final UserRepository userRepository;
-  private final ItemRepository itemRepository;
+    private final ItemMapper itemMapper;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
 
-  @Override
-  public ItemDto create(Long userId, ItemCreateDto itemDto) {
-    User user = userRepository.getById(userId);
-    if (user == null) {
-      throw new NotFoundException();
+    @Override
+    public ItemDto create(Long userId, ItemCreateDto itemDto) {
+        User user = userRepository.getById(userId);
+        if (user == null) {
+            throw new NotFoundException();
+        }
+        Item item = itemMapper.toItem(itemDto);
+        return itemMapper.toItemDto(itemRepository.create(item, user));
     }
-    Item item = itemMapper.toItem(itemDto);
-    return itemMapper.toItemDto(itemRepository.create(item, user));
-  }
 
-  @Override
-  public ItemDto update(Long userId, Long itemId, ItemUpdateDto itemDto) {
-    ItemDto item = getById(itemId);
-    if (!item.getOwner().getId().equals(userId)) {
-      throw new IllegalCallerException();
+    @Override
+    public ItemDto update(Long userId, Long itemId, ItemUpdateDto itemDto) {
+        ItemDto item = getById(itemId);
+        if (!item.getOwner().getId().equals(userId)) {
+            throw new IllegalCallerException();
+        }
+        return itemMapper.toItemDto(itemRepository.update(itemId, itemMapper.toItem(itemDto)));
     }
-    return itemMapper.toItemDto(itemRepository.update(itemId, itemMapper.toItem(itemDto)));
-  }
 
-  @Override
-  public ItemDto getById(Long itemId) {
-    return itemMapper.toItemDto(itemRepository.getById(itemId));
-  }
-
-  @Override
-  public List<ItemDto> getAllByUser(Long userId) {
-    return itemRepository.getAllByUser(userId)
-            .stream()
-            .map(itemMapper::toItemDto)
-            .collect(Collectors.toList());
-  }
-
-  @Override
-  public List<ItemDto> searchByText(String text) {
-    if (text.isEmpty()) {
-      return Collections.emptyList();
+    @Override
+    public ItemDto getById(Long itemId) {
+        return itemMapper.toItemDto(itemRepository.getById(itemId));
     }
-    return itemRepository.searchByText(text)
-            .stream()
-            .map(itemMapper::toItemDto)
-            .collect(Collectors.toList());
-  }
+
+    @Override
+    public List<ItemDto> getAllByUser(Long userId) {
+        return itemRepository.getAllByUser(userId)
+                .stream()
+                .map(itemMapper::toItemDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemDto> searchByText(String text) {
+        if (text.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return itemRepository.searchByText(text)
+                .stream()
+                .map(itemMapper::toItemDto)
+                .collect(Collectors.toList());
+    }
 }
