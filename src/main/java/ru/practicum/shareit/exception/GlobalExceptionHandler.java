@@ -8,6 +8,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -27,6 +28,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>("Header not exists", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value = UnknownStateException.class)
+    protected ResponseEntity<ErrorResponse> handleHeaderUnknownStateException(UnknownStateException exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(value = NotFoundException.class)
     protected ResponseEntity<String> handleNotFoundException(NotFoundException exception, WebRequest request) {
         return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
@@ -35,5 +41,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = IllegalCallerException.class)
     protected ResponseEntity<String> handleIllegalCallerException(IllegalCallerException exception) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = ValidationException.class)
+    protected ResponseEntity<String> handleValidationException(ValidationException validationException) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
