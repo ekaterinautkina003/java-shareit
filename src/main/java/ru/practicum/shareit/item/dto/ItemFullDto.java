@@ -11,14 +11,14 @@ import java.util.List;
 @Builder
 public class ItemFullDto {
 
-  private Long id;
-  @NotEmpty
-  private String name;
-  @NotEmpty
-  private String description;
-  @NotNull
-  private Boolean available;
-  private ItemBookingDto lastBooking;
-  private ItemBookingDto nextBooking;
-  private List<CommentDto> comments;
+    private Long id;
+    @NotEmpty
+    private String name;
+    @NotEmpty
+    private String description;
+    @NotNull
+    private Boolean available;
+    private ItemBookingDto lastBooking;
+    private ItemBookingDto nextBooking;
+    private List<CommentDto> comments;
 }

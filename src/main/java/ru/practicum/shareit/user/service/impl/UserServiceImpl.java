@@ -18,52 +18,52 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  private final UserMapper userMapper;
-  private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
-  @Override
-  public UserDto create(UserDto userDto) {
-    User result = null;
-    try {
-      result = userRepository.save(userMapper.toUser(userDto));
-    } catch (Exception e) {
-      throw new AlreadyExistsException();
+    @Override
+    public UserDto create(UserDto userDto) {
+        User result = null;
+        try {
+            result = userRepository.save(userMapper.toUser(userDto));
+        } catch (Exception e) {
+            throw new AlreadyExistsException();
+        }
+        return userMapper.toUserDto(result);
     }
-    return userMapper.toUserDto(result);
-  }
 
-  @Override
-  public UserDto update(Long userId, UserDto userDto) {
-    User result = userRepository.findById(userId)
-            .orElseThrow(NotFoundException::new);
-    if (userDto.getEmail() != null && userDto.getEmail().equals(result.getEmail())) {
-      return getById(userId);
+    @Override
+    public UserDto update(Long userId, UserDto userDto) {
+        User result = userRepository.findById(userId)
+                .orElseThrow(NotFoundException::new);
+        if (userDto.getEmail() != null && userDto.getEmail().equals(result.getEmail())) {
+            return getById(userId);
+        }
+        userDto.setId(userId);
+        if (userDto.getName() != null) {
+            result.setName(userDto.getName());
+        }
+        if (userDto.getEmail() != null) {
+            result.setEmail(userDto.getEmail());
+        }
+        return userMapper.toUserDto(userRepository.save(result));
     }
-    userDto.setId(userId);
-    if (userDto.getName() != null) {
-      result.setName(userDto.getName());
+
+    @Override
+    public UserDto getById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        return userMapper.toUserDto(user);
     }
-    if (userDto.getEmail() != null) {
-      result.setEmail(userDto.getEmail());
+
+    @Override
+    public void delete(Long userId) {
+        userRepository.deleteById(userId);
     }
-    return userMapper.toUserDto(userRepository.save(result));
-  }
 
-  @Override
-  public UserDto getById(Long userId) {
-    User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
-    return userMapper.toUserDto(user);
-  }
-
-  @Override
-  public void delete(Long userId) {
-    userRepository.deleteById(userId);
-  }
-
-  @Override
-  public List<UserDto> getAll() {
-    return StreamSupport.stream(userRepository.findAll().spliterator(), false)
-            .map(userMapper::toUserDto)
-            .collect(Collectors.toList());
-  }
+    @Override
+    public List<UserDto> getAll() {
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .map(userMapper::toUserDto)
+                .collect(Collectors.toList());
+    }
 }
