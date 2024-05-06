@@ -1,12 +1,16 @@
 package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.HeaderNotExistsException;
-import ru.practicum.shareit.item.dto.*;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentRequestDto;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemFullDto;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
@@ -52,8 +56,12 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ItemDto>> search(@RequestParam("text") String text) {
-        return new ResponseEntity<>(itemService.searchByText(text), HttpStatus.OK);
+    public ResponseEntity<List<ItemDto>> search(
+            @RequestParam("text") String text,
+            @RequestParam(required = false, defaultValue = "0") final Integer from,
+            @RequestParam(required = false, defaultValue = "10") final Integer size
+    ) {
+        return new ResponseEntity<>(itemService.searchByText(text, PageRequest.of(from, size)), HttpStatus.OK);
     }
 
     @PostMapping("/{itemId}/comment")
@@ -66,7 +74,11 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemFullDto>> getAllComment(@RequestHeader("X-Sharer-User-Id") Long userId) {
-        return new ResponseEntity<>(itemService.getUserItems(userId), HttpStatus.OK);
+    public ResponseEntity<List<ItemFullDto>> getAllComment(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestParam(required = false, defaultValue = "0") final Integer from,
+            @RequestParam(required = false, defaultValue = "10") final Integer size
+    ) {
+        return new ResponseEntity<>(itemService.getUserItems(userId, PageRequest.of(from, size)), HttpStatus.OK);
     }
 }

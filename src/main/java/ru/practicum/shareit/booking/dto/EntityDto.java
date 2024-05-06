@@ -9,6 +9,6 @@ import lombok.Setter;
 @Builder
 public class EntityDto {
 
-  private Long id;
-  private String name;
+    private Long id;
+    private String name;
 }
