@@ -33,7 +33,8 @@ public class ItemRequestControllerTest {
   private ObjectMapper mapper;
 
   @Test
-  void createEmptyDescription() throws Exception {
+  @SneakyThrows
+  void createEmptyDescription() {
     var response = mockMvc.perform(MockMvcRequestBuilders.post(URL)
             .header("Content-Type", "application/json")
             .header("X-Sharer-User-Id", 1L)
@@ -41,7 +42,6 @@ public class ItemRequestControllerTest {
 
     response.andExpect(status().is4xxClientError());
   }
-
 
   @Test
   @SneakyThrows

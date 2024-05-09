@@ -20,8 +20,7 @@ import ru.practicum.shareit.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -193,6 +192,24 @@ public class BookingControllerTest {
 
     response.andExpect(status().isOk());
   }
+
+    @Test
+    @SneakyThrows
+    void changeBooking() {
+        BookingRequestDto bookingRequestDTO = createBookingRequestDto();
+        BookingDto expected = createBookingDto();
+
+        when(bookingService.update(anyLong(), anyLong(), anyBoolean()))
+                .thenReturn(expected);
+
+        var response = mockMvc.perform(MockMvcRequestBuilders.patch(URL.concat("/{bookingId}"), 1L)
+                .param("approved", Boolean.FALSE.toString())
+                .header("Content-Type", "application/json")
+                .header("X-Sharer-User-Id", 1L)
+                .content(mapper.writeValueAsString(bookingRequestDTO)));
+
+        response.andExpect(status().isOk());
+    }
 
   @Test
   @SneakyThrows

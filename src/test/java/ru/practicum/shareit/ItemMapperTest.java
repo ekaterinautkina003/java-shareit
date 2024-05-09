@@ -19,8 +19,8 @@ public class ItemMapperTest {
   private final ItemMapper itemMapper = new ItemMapper();
 
   @Test
-  void toDTOWithoutRequestTest() {
-    Item item = getDefaultItem();
+  void toDtoWithoutRequestTest() {
+    Item item = createItem();
 
     var result = itemMapper.toItemDto(item);
     assertThat(result.getId()).isEqualTo(item.getId());
@@ -31,7 +31,7 @@ public class ItemMapperTest {
   }
 
   @Test
-  void toDTOWithRequestTest() {
+  void toDtoWithRequestTest() {
     Item item = Item.builder()
             .id(1L)
             .name("test")
@@ -51,8 +51,8 @@ public class ItemMapperTest {
   }
 
   @Test
-  void toFullDTOEmptyFieldsTest() {
-    Item item = getDefaultItem();
+  void toFullDtoEmptyFieldsTest() {
+    Item item = createItem();
     List<CommentDto> comments = Collections.emptyList();
 
     var result = itemMapper.toItemFullDto(item, comments, null, null);
@@ -67,8 +67,8 @@ public class ItemMapperTest {
   }
 
   @Test
-  void toFullDTOAllFieldsTest() {
-    Item item = getDefaultItem();
+  void toFullDtoAllFieldsTest() {
+    Item item = createItem();
     CommentDto comment = CommentDto.builder()
             .id(1L)
             .text("test")
@@ -102,7 +102,7 @@ public class ItemMapperTest {
     assertThat(result.getComments()).usingRecursiveComparison().isEqualTo(comments);
   }
 
-  private Item getDefaultItem() {
+  private Item createItem() {
     return Item.builder()
             .id(1L)
             .name("test")
