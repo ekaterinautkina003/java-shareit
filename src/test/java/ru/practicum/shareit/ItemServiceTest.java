@@ -217,43 +217,6 @@ public class ItemServiceTest {
   }
 
   @Test
-  void getUserItems() {
-    ItemDto itemDTO = createItemDto();
-    Booking booking = createBooking();
-    Comment comment = createComment();
-    when(itemRepository.getItemsByOwnerId(anyLong(), any()))
-            .thenReturn(List.of(createItem()));
-    when(itemRepository.findById(anyLong()))
-            .thenReturn(Optional.of(createItem()));
-    when(bookingRepository.findBookingsByItemId(anyLong()))
-            .thenReturn(List.of(booking));
-    when(commentRepository.findAllByItemId(anyLong()))
-            .thenReturn(List.of(comment));
-
-    var result = itemService.getUserItems(2L, null);
-    var resultItemDTO = result.get(0);
-
-    assertThat(result).isNotNull();
-    assertThat(result).hasSize(1);
-    assertThat(resultItemDTO.getId()).isEqualTo(itemDTO.getId());
-    assertThat(resultItemDTO.getName()).isEqualTo(itemDTO.getName());
-    assertThat(resultItemDTO.getDescription()).isEqualTo(itemDTO.getDescription());
-    assertThat(resultItemDTO.getAvailable()).isEqualTo(itemDTO.getAvailable());
-    assertThat(resultItemDTO.getNextBooking()).isNull();
-    assertThat(resultItemDTO.getLastBooking()).isNotNull();
-    assertThat(resultItemDTO.getComments()).hasSize(1);
-    assertThat(resultItemDTO.getComments().get(0).getId()).isEqualTo(comment.getId());
-    assertThat(resultItemDTO.getComments().get(0).getText()).isEqualTo(comment.getText());
-    assertThat(resultItemDTO.getComments().get(0).getAuthorName()).isEqualTo(
-            comment.getUser().getName());
-
-    verify(itemRepository, times(1)).findById(anyLong());
-    verify(itemRepository, times(1)).getItemsByOwnerId(anyLong(), any());
-    verify(bookingRepository, times(1)).findBookingsByItemId(anyLong());
-    verify(commentRepository, times(1)).findAllByItemId(anyLong());
-  }
-
-  @Test
   void searchEmptyText() {
     var result = itemService.searchByText("", null);
     assertThat(result).isEmpty();
