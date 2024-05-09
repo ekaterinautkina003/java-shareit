@@ -15,34 +15,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
-        return new ResponseEntity<>(userService.create(userDto), HttpStatus.OK);
-    }
+  @PostMapping
+  public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
+    return new ResponseEntity<>(userService.create(userDto), HttpStatus.OK);
+  }
 
-    @PatchMapping("/{userId}")
-    public ResponseEntity<UserDto> update(
-            @PathVariable("userId") Long userId,
-            @RequestBody UserDto userDto
-    ) {
-        return new ResponseEntity<>(userService.update(userId, userDto), HttpStatus.OK);
-    }
+  @PatchMapping("/{userId}")
+  public ResponseEntity<UserDto> update(
+          @PathVariable("userId") Long userId,
+          @RequestBody UserDto userDto
+  ) {
+    return new ResponseEntity<>(userService.update(userId, userDto), HttpStatus.OK);
+  }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getById(@PathVariable("userId") Long userId) {
-        return new ResponseEntity<>(userService.getById(userId), HttpStatus.OK);
-    }
+  @GetMapping("/{userId}")
+  public ResponseEntity<UserDto> getById(@PathVariable("userId") Long userId) {
+    return new ResponseEntity<>(userService.getById(userId), HttpStatus.OK);
+  }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> delete(@PathVariable("userId") Long userId) {
-        userService.delete(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @DeleteMapping("/{userId}")
+  public ResponseEntity<Void> delete(@PathVariable("userId") Long userId) {
+    userService.delete(userId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
-    @GetMapping
-    public ResponseEntity<List<UserDto>> getAll() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
-    }
+  @GetMapping
+  public ResponseEntity<List<UserDto>> getAll() {
+    return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+  }
 }
