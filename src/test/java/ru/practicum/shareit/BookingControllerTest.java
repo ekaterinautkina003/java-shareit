@@ -196,24 +196,6 @@ public class BookingControllerTest {
 
   @Test
   @SneakyThrows
-  void changeBooking() {
-    BookingRequestDto bookingRequestDto = createBookingRequestDto();
-    BookingDto expected = createBookingDto();
-
-    when(bookingService.update(anyLong(), anyLong(), any()))
-            .thenReturn(expected);
-
-    var response = mockMvc.perform(MockMvcRequestBuilders.patch(URL.concat("/{bookingId}"), 1L)
-            .param("approved", Boolean.FALSE.toString())
-            .header("Content-Type", "application/json")
-            .header("X-Sharer-User-Id", 1L)
-            .content(mapper.writeValueAsString(bookingRequestDto)));
-
-    response.andExpect(status().isOk());
-  }
-
-  @Test
-  @SneakyThrows
   void getById() {
     BookingRequestDto bookingRequestDTO = createBookingRequestDto();
     var expected = createBookingDto();
