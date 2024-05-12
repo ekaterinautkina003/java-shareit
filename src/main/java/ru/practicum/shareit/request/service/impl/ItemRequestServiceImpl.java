@@ -18,43 +18,43 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemRequestServiceImpl implements ItemRequestService {
 
-  private final UserRepository userRepository;
-  private final ItemRequestMapper itemRequestMapper;
-  private final ItemRequestRepository itemRequestRepository;
+    private final UserRepository userRepository;
+    private final ItemRequestMapper itemRequestMapper;
+    private final ItemRequestRepository itemRequestRepository;
 
-  @Override
-  public List<ItemRequestDto> getAll(Long userId, Pageable pageable) {
-    return itemRequestRepository.findAllWithoutUserId(userId, pageable)
-            .stream()
-            .map(itemRequestMapper::toItemRequestDto)
-            .collect(Collectors.toList());
-  }
+    @Override
+    public List<ItemRequestDto> getAll(Long userId, Pageable pageable) {
+        return itemRequestRepository.findAllWithoutUserId(userId, pageable)
+                .stream()
+                .map(itemRequestMapper::toItemRequestDto)
+                .collect(Collectors.toList());
+    }
 
-  @Override
-  public ItemRequestDto get(Long userId, Long requestId) {
-    userRepository.findById(userId)
-            .orElseThrow(NotFoundException::new);
-    return itemRequestRepository.findById(requestId)
-            .map(itemRequestMapper::toItemRequestDto)
-            .orElseThrow(NotFoundException::new);
-  }
+    @Override
+    public ItemRequestDto get(Long userId, Long requestId) {
+        userRepository.findById(userId)
+                .orElseThrow(NotFoundException::new);
+        return itemRequestRepository.findById(requestId)
+                .map(itemRequestMapper::toItemRequestDto)
+                .orElseThrow(NotFoundException::new);
+    }
 
-  @Override
-  public List<ItemRequestDto> getSelf(Long userId) {
-    userRepository.findById(userId)
-            .orElseThrow(NotFoundException::new);
-    return itemRequestRepository.findAllByRequestorId(userId)
-            .stream()
-            .map(itemRequestMapper::toItemRequestDto)
-            .collect(Collectors.toList());
-  }
+    @Override
+    public List<ItemRequestDto> getSelf(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(NotFoundException::new);
+        return itemRequestRepository.findAllByRequestorId(userId)
+                .stream()
+                .map(itemRequestMapper::toItemRequestDto)
+                .collect(Collectors.toList());
+    }
 
-  @Override
-  public ItemRequestDto create(Long userId, ItemRequestShortDto itemRequestShortDto) {
-    return userRepository.findById(userId)
-            .map(user -> itemRequestMapper.toItemRequest(user, itemRequestShortDto))
-            .map(itemRequestRepository::save)
-            .map(itemRequestMapper::toItemRequestDto)
-            .orElseThrow(NotFoundException::new);
-  }
+    @Override
+    public ItemRequestDto create(Long userId, ItemRequestShortDto itemRequestShortDto) {
+        return userRepository.findById(userId)
+                .map(user -> itemRequestMapper.toItemRequest(user, itemRequestShortDto))
+                .map(itemRequestRepository::save)
+                .map(itemRequestMapper::toItemRequestDto)
+                .orElseThrow(NotFoundException::new);
+    }
 }

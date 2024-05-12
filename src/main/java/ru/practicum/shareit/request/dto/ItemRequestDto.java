@@ -13,11 +13,11 @@ import java.util.List;
 @Builder
 public class ItemRequestDto {
 
-  @NotNull
-  private Long id;
-  @NotEmpty
-  private String description;
-  @NotNull
-  private LocalDateTime created;
-  private List<ItemDto> items;
+    @NotNull
+    private Long id;
+    @NotEmpty
+    private String description;
+    @NotNull
+    private LocalDateTime created;
+    private List<ItemDto> items;
 }

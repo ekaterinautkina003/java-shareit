@@ -2,7 +2,7 @@ package ru.practicum.shareit.exception;
 
 public class UnknownStateException extends RuntimeException {
 
-  public UnknownStateException(String message) {
-    super("Unknown state: " + message);
-  }
+    public UnknownStateException(String message) {
+        super("Unknown state: " + message);
+    }
 }

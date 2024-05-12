@@ -19,15 +19,15 @@ import java.util.List;
 @Table(name = "requests")
 public class ItemRequest {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  private String description;
-  private final LocalDateTime created = LocalDateTime.now();
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "requestor_id", nullable = false)
-  private User requestor;
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "request_id")
-  private List<Item> items;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String description;
+    private final LocalDateTime created = LocalDateTime.now();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requestor_id", nullable = false)
+    private User requestor;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
+    private List<Item> items;
 }

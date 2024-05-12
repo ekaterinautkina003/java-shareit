@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
 
-  @Query("select i from ItemRequest i where i.requestor.id != ?1 order by i.created DESC")
-  List<ItemRequest> findAllWithoutUserId(Long userId, Pageable pageable);
+    @Query("select i from ItemRequest i where i.requestor.id != ?1 order by i.created DESC")
+    List<ItemRequest> findAllWithoutUserId(Long userId, Pageable pageable);
 
-  List<ItemRequest> findAllByRequestorId(Long requestorId);
+    List<ItemRequest> findAllByRequestorId(Long requestorId);
 }

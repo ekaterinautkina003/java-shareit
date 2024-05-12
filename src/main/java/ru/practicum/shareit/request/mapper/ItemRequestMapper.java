@@ -17,36 +17,36 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemRequestMapper {
 
-  private final ItemMapper itemMapper;
+    private final ItemMapper itemMapper;
 
-  public ItemRequestDto toItemRequestDto(ItemRequest entity) {
-    return ItemRequestDto.builder()
-            .id(entity.getId())
-            .description(entity.getDescription())
-            .created(entity.getCreated())
-            .items(toList(entity))
-            .build();
-  }
-
-  public ItemRequest toItemRequest(
-          User user,
-          ItemRequestShortDto requestDTO
-  ) {
-    return ItemRequest.builder()
-            .description(requestDTO.getDescription())
-            .requestor(user)
-            .build();
-  }
-
-  private List<ItemDto> toList(ItemRequest entity) {
-    if (entity.getItems() == null) {
-      return Collections.emptyList();
+    public ItemRequestDto toItemRequestDto(ItemRequest entity) {
+        return ItemRequestDto.builder()
+                .id(entity.getId())
+                .description(entity.getDescription())
+                .created(entity.getCreated())
+                .items(toList(entity))
+                .build();
     }
-    if (entity.getItems().isEmpty()) {
-      return Collections.emptyList();
+
+    public ItemRequest toItemRequest(
+            User user,
+            ItemRequestShortDto requestDTO
+    ) {
+        return ItemRequest.builder()
+                .description(requestDTO.getDescription())
+                .requestor(user)
+                .build();
     }
-    return entity.getItems().stream()
-            .map(itemMapper::toItemDto)
-            .collect(Collectors.toList());
-  }
+
+    private List<ItemDto> toList(ItemRequest entity) {
+        if (entity.getItems() == null) {
+            return Collections.emptyList();
+        }
+        if (entity.getItems().isEmpty()) {
+            return Collections.emptyList();
+        }
+        return entity.getItems().stream()
+                .map(itemMapper::toItemDto)
+                .collect(Collectors.toList());
+    }
 }
