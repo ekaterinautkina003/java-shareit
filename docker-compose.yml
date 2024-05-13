@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   server:
-    build: ./server
+    build: ./shareIt-server
     restart: on-failure
     container_name: share-server
     ports:
@@ -16,7 +16,7 @@ services:
       - SERVER_PORT=9090
 
   gateway:
-    build: ./gateway
+    build: ./shareIt-gateway
     container_name: share-gateway
     ports:
       - "8080:8080"

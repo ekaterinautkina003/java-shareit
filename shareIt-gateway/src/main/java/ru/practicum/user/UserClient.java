@@ -16,8 +16,7 @@ public class UserClient extends Client {
     private static final String PATH = "/users";
 
     public UserClient(
-            @Value("${shareit-server.url}")
-            String serverUrl,
+            @Value("${shareit-server.url}") String serverUrl,
             RestTemplateBuilder builder
     ) {
         super(builder.uriTemplateHandler(
@@ -40,7 +39,7 @@ public class UserClient extends Client {
     }
 
     public ResponseEntity<Object> update(Long id, UserDto user) {
-        return request(HttpMethod.PATCH, "/" + id, null, null , user);
+        return request(HttpMethod.PATCH, "/" + id, null, null, user);
     }
 
     public ResponseEntity<Object> deleteById(Long id) {
