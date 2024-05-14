@@ -20,7 +20,6 @@ import ru.practicum.user.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import javax.validation.ValidationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
       throw new NotFoundException();
     }
     if (!itemRepository.isItemAvalible(bookingDto.getItemId())) {
-      throw new ValidationException();
+      throw new IllegalArgumentException();
     }
 
     bookingDto.setStatus(BookingStatus.WAITING.name());
@@ -62,7 +61,7 @@ public class BookingServiceImpl implements BookingService {
     userRepository.findById(userId).orElseThrow(NotFoundException::new);
     Booking booking = bookingRepository.findById(bookingId).orElseThrow(NotFoundException::new);
     if (BookingStatus.valueOf(booking.getStatus()).equals(BookingStatus.APPROVED)) {
-      throw new ValidationException();
+      throw new IllegalArgumentException();
     }
     Item item = itemRepository.findById(booking.getItem().getId())
             .orElseThrow(NotFoundException::new);
@@ -84,7 +83,7 @@ public class BookingServiceImpl implements BookingService {
 
   @Override
   public BookingDto getById(Long userId, Long bookingId) {
-    User user = userRepository.findById(userId)
+    userRepository.findById(userId)
             .orElseThrow(NotFoundException::new);
     Booking booking = bookingRepository.findById(bookingId)
             .orElseThrow(NotFoundException::new);
@@ -193,7 +192,7 @@ public class BookingServiceImpl implements BookingService {
     if (bookingParam.getStart().equals(bookingParam.getEnd())
             || bookingParam.getStart().isAfter(bookingParam.getEnd())
     ) {
-      throw new ValidationException();
+      throw new IllegalArgumentException();
     }
   }
 }

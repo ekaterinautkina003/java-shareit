@@ -1,14 +1,13 @@
 package ru.practicum.exception;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -43,13 +42,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = ValidationException.class)
-    protected ResponseEntity<String> handleValidationException(ValidationException validationException) {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(value = IllegalArgumentException.class)
     protected ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    protected ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 }

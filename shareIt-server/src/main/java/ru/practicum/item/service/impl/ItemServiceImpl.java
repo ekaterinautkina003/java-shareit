@@ -22,7 +22,6 @@ import ru.practicum.request.repository.ItemRequestRepository;
 import ru.practicum.user.model.User;
 import ru.practicum.user.repository.UserRepository;
 
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -93,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
     Item item = itemRepository.findById(itemId)
             .orElseThrow(NotFoundException::new);
     if (!bookingRepository.existsBookingByBookerIdAndStatus(userId, BookingStatus.APPROVED.name())) {
-      throw new ValidationException();
+      throw new IllegalArgumentException();
     }
     Comment comment = commentRepository.save(Comment.builder()
             .text(commentDto.getText())

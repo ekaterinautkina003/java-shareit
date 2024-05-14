@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.exception.HeaderNotExistsException;
 import ru.practicum.item.dto.CommentDto;
@@ -13,10 +12,8 @@ import ru.practicum.item.dto.ItemDto;
 import ru.practicum.item.dto.ItemFullDto;
 import ru.practicum.item.service.ItemService;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@Validated
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -27,7 +24,7 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<ItemDto> create(
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @Valid @RequestBody ItemDto itemDto
+            @RequestBody ItemDto itemDto
     ) {
         if (userId == null) {
             throw new HeaderNotExistsException();
@@ -67,7 +64,7 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<CommentDto> addComment(
             @PathVariable("itemId") Long itemId,
-            @Valid @RequestBody CommentRequestDto commentDto,
+            @RequestBody CommentRequestDto commentDto,
             @RequestHeader("X-Sharer-User-Id") Long userId
     ) {
         return new ResponseEntity<>(itemService.addCommentToItem(itemId, userId, commentDto), HttpStatus.OK);

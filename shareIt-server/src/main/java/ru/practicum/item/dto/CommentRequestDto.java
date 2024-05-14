@@ -1,6 +1,5 @@
 package ru.practicum.item.dto;
 
-import javax.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
@@ -10,7 +9,5 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class CommentRequestDto {
 
-  @NotEmpty
   private String text;
-
 }

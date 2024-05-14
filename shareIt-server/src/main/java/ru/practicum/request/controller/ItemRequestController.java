@@ -8,7 +8,6 @@ import ru.practicum.request.dto.ItemRequestDto;
 import ru.practicum.request.dto.ItemRequestShortDto;
 import ru.practicum.request.service.ItemRequestService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +21,7 @@ public class ItemRequestController {
   @PostMapping
   public ItemRequestDto create(
           @RequestHeader(REQUEST_HEADER_USER_ID) Long userId,
-          @Valid @RequestBody final ItemRequestShortDto requestDTO
+          @RequestBody final ItemRequestShortDto requestDTO
   ) {
     return itemRequestService.create(userId, requestDTO);
   }

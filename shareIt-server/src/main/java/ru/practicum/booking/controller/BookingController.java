@@ -2,16 +2,13 @@ package ru.practicum.booking.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.booking.dto.BookingDto;
 import ru.practicum.booking.dto.BookingRequestDto;
 import ru.practicum.booking.service.BookingService;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@Validated
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
@@ -22,7 +19,7 @@ public class BookingController {
   @PostMapping
   public BookingDto create(
           @RequestHeader("X-Sharer-User-Id") Long userId,
-          @Valid @RequestBody BookingRequestDto bookingRequestDTO
+          @RequestBody BookingRequestDto bookingRequestDTO
   ) {
     return bookingService.create(userId, bookingRequestDTO);
   }
