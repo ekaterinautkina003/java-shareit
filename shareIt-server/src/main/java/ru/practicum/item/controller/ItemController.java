@@ -1,0 +1,81 @@
+package ru.practicum.item.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.exception.HeaderNotExistsException;
+import ru.practicum.item.dto.CommentDto;
+import ru.practicum.item.dto.CommentRequestDto;
+import ru.practicum.item.dto.ItemDto;
+import ru.practicum.item.dto.ItemFullDto;
+import ru.practicum.item.service.ItemService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/items")
+@RequiredArgsConstructor
+public class ItemController {
+
+    private final ItemService itemService;
+
+    @PostMapping
+    public ResponseEntity<ItemDto> create(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestBody ItemDto itemDto
+    ) {
+        if (userId == null) {
+            throw new HeaderNotExistsException();
+        }
+        return new ResponseEntity<>(itemService.create(userId, itemDto), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{itemId}")
+    public ResponseEntity<ItemDto> update(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @PathVariable("itemId") Long itemId,
+            @RequestBody ItemDto itemDto
+    ) {
+        if (userId == null) {
+            throw new HeaderNotExistsException();
+        }
+        return new ResponseEntity<>(itemService.update(userId, itemId, itemDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/{itemId}")
+    public ResponseEntity<ItemFullDto> getById(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        return new ResponseEntity<>(itemService.getById(userId, itemId), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ItemDto>> search(
+            @RequestParam("text") String text,
+            @RequestParam(required = false, defaultValue = "0") final Integer from,
+            @RequestParam(required = false, defaultValue = "10") final Integer size
+    ) {
+        return new ResponseEntity<>(itemService.searchByText(text, PageRequest.of(from, size)), HttpStatus.OK);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public ResponseEntity<CommentDto> addComment(
+            @PathVariable("itemId") Long itemId,
+            @RequestBody CommentRequestDto commentDto,
+            @RequestHeader("X-Sharer-User-Id") Long userId
+    ) {
+        return new ResponseEntity<>(itemService.addCommentToItem(itemId, userId, commentDto), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ItemFullDto>> getAllComment(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestParam(required = false, defaultValue = "0") final Integer from,
+            @RequestParam(required = false, defaultValue = "10") final Integer size
+    ) {
+        return new ResponseEntity<>(itemService.getUserItems(userId, PageRequest.of(from, size)), HttpStatus.OK);
+    }
+}
